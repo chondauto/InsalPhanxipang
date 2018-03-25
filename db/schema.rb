@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180325024350) do
+ActiveRecord::Schema.define(version: 20180325050503) do
 
   create_table "bills", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date "start_renting"
@@ -33,10 +33,15 @@ ActiveRecord::Schema.define(version: 20180325024350) do
   create_table "product_bills", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "product_id"
     t.bigint "bill_id"
+    t.bigint "size_id"
+    t.integer "renting_quantity"
+    t.string "renting_fee_product"
+    t.string "name_product"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_product_bills_on_bill_id"
     t.index ["product_id"], name: "index_product_bills_on_product_id"
+    t.index ["size_id"], name: "index_product_bills_on_size_id"
   end
 
   create_table "product_sizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -55,7 +60,6 @@ ActiveRecord::Schema.define(version: 20180325024350) do
     t.string "name"
     t.string "price"
     t.string "renting_fee"
-    t.integer "renting_quantity"
     t.string "image"
     t.bigint "category_id"
     t.datetime "created_at", null: false
@@ -84,6 +88,7 @@ ActiveRecord::Schema.define(version: 20180325024350) do
   add_foreign_key "bills", "users"
   add_foreign_key "product_bills", "bills"
   add_foreign_key "product_bills", "products"
+  add_foreign_key "product_bills", "sizes"
   add_foreign_key "product_sizes", "products"
   add_foreign_key "product_sizes", "sizes"
   add_foreign_key "products", "categories"
